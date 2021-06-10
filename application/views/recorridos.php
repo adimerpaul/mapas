@@ -67,10 +67,10 @@
         #logouto {
             position: absolute;
             top: 0px;
-            left: 0px;
+            right: 0px;
             padding: 10px;
             margin-top: 0px;
-            margin-left: 250px;
+            margin-right: 50px;
             z-index: 400;
         }
     </style>
