@@ -46,6 +46,33 @@
             margin-left: 130px;
             z-index: 400;
         }
+        #titulo {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            padding: 10px;
+            margin-top: 10px;
+            margin-left: 310px;
+            z-index: 400;
+        }
+        #logooruro {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            padding: 10px;
+            margin-top: 0px;
+            margin-left: 200px;
+            z-index: 400;
+        }
+        #logouto {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            padding: 10px;
+            margin-top: 0px;
+            margin-left: 250px;
+            z-index: 400;
+        }
     </style>
 
     <style>body { padding: 0; margin: 0; } #map { height: 100%; width: 100vw; }</style>
@@ -55,14 +82,16 @@
 <div id='map'></div>
 <a href="<?=base_url()?>Welcome" id="btnlugares" class="btn btn-primary">Lugares</a>
 <a href="<?=base_url()?>Welcome/recorridos" id="recorridos" class="btn btn-primary">Recorridos</a>
-
+<img src="<?=base_url()?>img/oruro.png" id="logooruro" alt="" width="50">
+<img src="<?=base_url()?>img/uto.png" id="logouto" alt="" width="50">
+<label for="" style="font-weight: bold;color: #002166" id="titulo">MANCOMUNIDAD ASANAKE-ORURO</label>
 <script>
     window.onload=function (){
         $('#map').on('click','.eliminar',function (e){
             // console.log($(this).attr('data-id'));
             let id=$(this).attr('data-id');
             $.ajax({
-                url:'<?=base_url()?>Welcome/eliminar/'+id,
+                url:'<?=base_url()?>Welcome/eliminarruta/'+id,
                 success:function (e){
                     // let dat=JSON.parse(e);
                     // console.log(e);
@@ -106,24 +135,42 @@
         };
 
         L.control.layers(baseLayers, overlays).addTo(map);
-        // datos();
+        datos();
 
         function datos(){
             lugares.clearLayers();
             $.ajax({
-                url:'<?=base_url()?>Welcome/lugares',
+                url:'<?=base_url()?>Welcome/rutas',
                 success:function (e){
-                    let dat=JSON.parse(e);
+                    // console.log(e);
+                    // let dat=JSON.parse(e);
                     // console.log(dat);
-                    dat.forEach(r=>{
+                    e.forEach(r=>{
                         // console.log(r);
-                        L.marker([r.lat, r.lng]).bindPopup(r.name+' <span class="eliminar" data-id="'+r.id+'"><i class="fa fa-trash-alt"></i></span>').addTo(lugares);
+                        // L.marker([r.lat, r.lng]).bindPopup(r.name+' <span class="eliminar" data-id="'+r.id+'"><i class="fa fa-trash-alt"></i></span>').addTo(lugares);
+                        // let pointA = new L.LatLng(-19.088076, -66.860046);
+                        // let pointB = new L.LatLng(-19.0, -66.8);
+                        let pointList = [];
+                        r.puntos.forEach(p=>{
+                            // console.log(p);
+                            pointList.push(new L.LatLng(p.lat, p.lng))
+                        })
+
+                        let polyline = L.polyline(pointList, {color: 'red',weight:5}).bindPopup(r.nombre+' <span class="eliminar" data-id="'+r.id+'"><i class="fa fa-trash-alt"></i></span>').addTo(lugares);
                     })
                 }
             });
         }
         var popup = L.popup();
         var crear=false;
+        // var pointA = new L.LatLng(-19.088076, -66.860046);
+        // var pointB = new L.LatLng(-19.0, -66.8);
+        // var pointList = [pointA, pointB];
+        //
+        // var polyline = L.polyline(pointList, {color: 'red'}).addTo(lugares);
+        // map.fitBounds(polyline.getBounds());
+        var puntos=[];
+        var nombre='';
         function onMapClick(e) {
             if (crear==false){
                 popup
@@ -135,19 +182,38 @@
                     .setLatLng(e.latlng)
                     .setContent("<button class='terminar' id-lat='"+e.latlng.lat+"' id-lng='"+e.latlng.lng+"'>Terminar </button>" + e.latlng.toString())
                     .openOn(map);
+                puntos.push(e.latlng)
+                // console.log(puntos);
             }
-
         }
-        // var pointA = new L.LatLng(-19.088076, -66.860046);
-        // var pointB = new L.LatLng(-19.0, -66.8);
-        // var pointList = [pointA, pointB];
-        //
-        // var polyline = L.polyline(pointList, {color: 'red'}).addTo(lugares);
-        // map.fitBounds(polyline.getBounds());
-        var puntos=[];
+
+        $('#map').on('click','.terminar',function (e){
+            // puntos=[];
+            // crear=false;
+
+            let data={
+                nombre:nombre,
+                datos:JSON.stringify(puntos),
+            }
+            // console.log(puntos);
+            $.ajax({
+                url:'<?=base_url()?>Welcome/crearruta',
+                type:'POST',
+                data:data,
+                success:function (e){
+                    // let dat=JSON.parse(e);
+                    // console.log(e);
+                    datos();
+                    puntos=[];
+                    crear=false;
+                }
+            });
+        });
+
         $('#map').on('click','.crear',function (e){
             // console.log($('#nombre').val());
             crear=true;
+            nombre=$('#nombre').val();
             // console.log($(this).attr('id-lat'));
             // return false;
             //$.ajax({
