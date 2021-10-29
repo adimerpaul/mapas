@@ -80,11 +80,11 @@
 <body>
 
 <div id='map'></div>
-<a href="<?=base_url()?>Welcome" id="btnlugares" class="btn btn-primary">Lugares</a>
-<a href="<?=base_url()?>Welcome/recorridos" id="recorridos" class="btn btn-primary">Recorridos</a>
+<input type="button" onclick='location.href="<?=base_url()?>Welcome"' id="btnlugares" class="btn btn-primary" value="Lugares" />
+<input type="button" onclick='location.href="<?=base_url()?>Welcome/recorridos"' id="recorridos" class="btn btn-primary" value="Recorridos" />
 <img src="<?=base_url()?>img/oruro.png" id="logooruro" alt="" width="50">
 <img src="<?=base_url()?>img/uto.png" id="logouto" alt="" width="50">
-<label for="" style="font-weight: bold;color: #002166" id="titulo">MANCOMUNIDAD ASANAKE-ORURO</label>
+<label for="" style="font-weight: bold;color: #002166" id="titulo">Geo Referencia-ORURO</label>
 <script>
     window.onload=function (){
         $('#map').on('click','.eliminar',function (e){
@@ -116,8 +116,8 @@
             streets  = L.tileLayer(mbUrl, {id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, attribution: mbAttr});
 
         var map = L.map('map', {
-            center: [-19.1949438, -67.2809816],
-            zoom: 10,
+            center: [-17.960118, -67.110329],
+            zoom: 14,
             layers: [streets, lugares]
         });
 
@@ -141,7 +141,7 @@
                     // console.log(dat);
                     dat.forEach(r=>{
                         // console.log(r);
-                        L.marker([r.lat, r.lng]).bindPopup(r.name+' <span class="eliminar" data-id="'+r.id+'"><i class="fa fa-trash-alt"></i></span>').addTo(lugares);
+                        L.marker([r.lat, r.lng]).bindPopup(r.codigo+' <span class="eliminar" data-id="'+r.id+'"><i class="fa fa-trash-alt"></i></span>').addTo(lugares);
                     })
                 }
             });
@@ -150,7 +150,7 @@
         function onMapClick(e) {
             popup
                 .setLatLng(e.latlng)
-                .setContent("<input placeholder='nombre' id='nombre' /><button class='crear' id-lat='"+e.latlng.lat+"' id-lng='"+e.latlng.lng+"'>Crear </button>" + e.latlng.toString())
+                .setContent("<input placeholder='codigo' id='codigo' /><br><input placeholder='potencia' id='potencia' /><br><input placeholder='tipo luminaria' id='tipo' /><br><input placeholder='poste' id='poste' /><button class='crear' id-lat='"+e.latlng.lat+"' id-lng='"+e.latlng.lng+"'>Crear </button>" + e.latlng.toString())
                 .openOn(map);
         }
         $('#map').on('click','.crear',function (e){
@@ -160,11 +160,13 @@
             $.ajax({
                 url:'<?=base_url()?>Welcome/crear',
                 type:'POST',
-                data:{nombre:$('#nombre').val(),lat:$(this).attr('id-lat'),lng:$(this).attr('id-lng')},
+                data:{codigo:$('#codigo').val(),potencia:$('#potencia').val(),tipo:$('#tipo').val(),poste:$('#poste').val(),
+                lat:$(this).attr('id-lat'),lng:$(this).attr('id-lng')},
                 success:function (e){
                     // let dat=JSON.parse(e);
                     // console.log(e);
                     datos();
+                    
                 }
             });
         });
