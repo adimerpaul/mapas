@@ -83,7 +83,7 @@
 <input type="button" onclick='location.href="<?=base_url()?>Welcome"' id="btnlugares" class="btn btn-primary" value="Lugares" />
 <input type="button" onclick='location.href="<?=base_url()?>Welcome/recorridos"' id="recorridos" class="btn btn-primary" value="Recorridos" />
 <img src="<?=base_url()?>img/oruro.png" id="logooruro" alt="" width="50">
-<img src="<?=base_url()?>img/uto.png" id="logouto" alt="" width="50">
+<!--<img src="--><?//=base_url()?><!--img/uto.png" id="logouto" alt="" width="50">-->
 <label for="" style="font-weight: bold;color: #002166" id="titulo">Geo Referencia-ORURO</label>
 <script>
     window.onload=function (){
@@ -168,7 +168,7 @@
                     datos()
                     // map.closePopup();
                     popup.removeFrom(map)
-                    
+
                 }
             });
         });
