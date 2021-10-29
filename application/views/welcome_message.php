@@ -2,12 +2,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	
+
 	<title>Sistema de Información Geográfico</title>
 
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
+
 <!--	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />-->
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
@@ -165,7 +165,9 @@
                 success:function (e){
                     // let dat=JSON.parse(e);
                     // console.log(e);
-                    datos();
+                    datos()
+                    // map.closePopup();
+                    popup.removeFrom(map)
                     
                 }
             });
