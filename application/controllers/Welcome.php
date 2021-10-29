@@ -48,10 +48,18 @@ class Welcome extends CI_Controller {
         echo json_encode($array);
     }
     public function crear(){
-        $nombre=$this->input->post('nombre');
+        $codigo=$this->input->post('codigo');
+        $potencia=$this->input->post('potencia');
+        $tipo=$this->input->post('tipo');
+        $poste=$this->input->post('poste');
         $lat=$this->input->post('lat');
         $lng=$this->input->post('lng');
-        $this->db->query("INSERT INTO  lugares SET name='$nombre',lat='$lat',lng='$lng'");
+        $this->db->query("INSERT INTO  lugares SET codigo='$codigo',
+        potencia='$potencia',
+        poste='$poste',
+        tipo='$tipo',
+
+        lat='$lat',lng='$lng'");
 	    echo 1;
     }
     public function eliminar($id){
