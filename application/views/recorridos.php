@@ -83,8 +83,7 @@
 <a href="<?=base_url()?>Welcome" id="btnlugares" class="btn btn-primary">Lugares</a>
 <a href="<?=base_url()?>Welcome/recorridos" id="recorridos" class="btn btn-primary">Recorridos</a>
 <img src="<?=base_url()?>img/oruro.png" id="logooruro" alt="" width="50">
-<img src="<?=base_url()?>img/uto.png" id="logouto" alt="" width="50">
-<label for="" style="font-weight: bold;color: #002166" id="titulo">MANCOMUNIDAD ASANAKE-ORURO</label>
+<label for="" style="font-weight: bold;color: #002166" id="titulo"><b>RUMAP</b> <span style="font-size:14px;"> Registro Urbano de Mantenimiento de Alumbrado Publico</span></label>
 <script>
     window.onload=function (){
         $('#map').on('click','.eliminar',function (e){
