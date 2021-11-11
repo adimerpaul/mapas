@@ -190,10 +190,10 @@
         }
         var popup = L.popup();
         function onMapClick(e) {
-            // popup
-            //     .setLatLng(e.latlng)
-            //     .setContent("<input placeholder='codigo' id='codigo' /><br><input placeholder='potencia' id='potencia' /><br><input placeholder='tipo luminaria' id='tipo' /><br><input placeholder='poste' id='poste' /><button class='crear' id-lat='"+e.latlng.lat+"' id-lng='"+e.latlng.lng+"'>Crear </button>" + e.latlng.toString())
-            //     .openOn(map);
+            popup
+                .setLatLng(e.latlng)
+                .setContent("<input placeholder='codigo' id='codigo' /><br><input placeholder='potencia' id='potencia' /><br><input placeholder='tipo luminaria' id='tipo' /><br><input placeholder='poste' id='poste' /><button class='crear' id-lat='"+e.latlng.lat+"' id-lng='"+e.latlng.lng+"'>Crear </button>" + e.latlng.toString())
+                .openOn(map);
         }
         $('#map').on('click','.crear',function (e){
             // console.log($('#nombre').val());
