@@ -156,8 +156,8 @@
                     dat.forEach(r=>{
                         // console.log(r);
                         var redMarker = L.AwesomeMarkers.icon({
-                            icon: 'cog',
-                            prefix: 'fa',
+                            // icon: 'cog',
+                            // prefix: 'fa',
                             markerColor: r.color,
                             spin:true
                         });
