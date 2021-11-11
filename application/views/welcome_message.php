@@ -158,7 +158,7 @@
                         var redMarker = L.AwesomeMarkers.icon({
                             icon: 'cog',
                             prefix: 'fa',
-                            markerColor: 'green',
+                            markerColor: r.color,
                             spin:true
                         });
 
