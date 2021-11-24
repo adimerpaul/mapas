@@ -273,7 +273,7 @@
         function datos(){
             lugares.clearLayers();
             $.ajax({
-                url:'<?=base_url()?>Welcome/lugares',
+                url:'<?=base_url()?>Man/lugares',
                 success:function (e){
                     let dat=JSON.parse(e);
                     // console.log(dat);
