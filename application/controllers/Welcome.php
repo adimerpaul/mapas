@@ -93,4 +93,9 @@ class Welcome extends CI_Controller {
 //         var_dump($myArray);
 //        echo json_last_error(); //Returns 4 - Syntax error;
     }
+
+    public function enviarmtto($id){
+        $this->db->query("UPDATE lugares set estado='MTTO' WHERE id='$id'");
+        echo 1;
+    }
 }

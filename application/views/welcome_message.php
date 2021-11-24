@@ -104,10 +104,10 @@
 
 <div class="dropdown opciones">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Dropdown button
+        Menu
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="#">Action</a>
+        <a class="dropdown-item" href="<?=base_url()?>Mantenimiento">Postes</a>
         <a class="dropdown-item" href="#">Another action</a>
         <a class="dropdown-item" href="#">Something else here</a>
     </div>
@@ -205,6 +205,12 @@
             let id=$(this).attr('data-id');
             if (confirm("Seguro de mandar a mantenimiento?")){
                 alert(id)
+                $.ajax({
+                url:'<?=base_url()?>Welcome/enviarmtto/'+id,
+                success:function (e){
+                }
+            });
+
             }
 
             //$.ajax({
@@ -292,6 +298,7 @@
                             '<tr><td><b>Nro de post:</b></td><td>'+r.poste+'</td></tr>' +
                             '<tr><td><b>Tipo:</b></td><td>'+r.tipo+'</td></tr>' +
                             '<tr><td><b>Potencia:</b></td><td>'+r.potencia+' W</td></tr>' +
+                            '<tr><td><b>Estado:</b></td><td>'+r.estado+'</td></tr>' +
                             '<tr><td colspan="2"><b><button class="btn btn-primary mantenimiento" data-id="'+r.id+'"><i class="fa fa-sm fa-cog"></i>Mantenimento</button></b></td></tr>' +
                             '</table>'
                         L.marker([r.lat, r.lng], {icon: redMarker}).bindPopup(html+' <!--span class="eliminar" data-id="'+r.id+'"><i class="fa fa-trash-alt"></i></span-->').addTo(lugares);
