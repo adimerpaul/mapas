@@ -9,6 +9,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!--	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -21,7 +25,6 @@
 <!---->
 <!--    <link rel="stylesheet" href="--><?//=base_url()?><!--dist/leaflet.awesome-markers.css">-->
 <!--    <script src="--><?//=base_url()?><!--dist/leaflet.awesome-markers.js"></script>-->
-
     <link rel="stylesheet" href="<?=base_url()?>assets/css/leaflet.extra-markers.css">
     <script src="<?=base_url()?>assets/js/leaflet.extra-markers.js"></script>
 
@@ -92,8 +95,42 @@
 <img src="<?=base_url()?>img/oruro.png" id="logooruro" alt="" width="50">
 <!--<img src="--><?//=base_url()?><!--img/uto.png" id="logouto" alt="" width="50">-->
 <label for="" style="font-weight: bold;color: #002166" id="titulo"><b>RUMAP</b> <span style="font-size:14px;"> Registro Urbano de Mantenimiento de Alumbrado Publico</span></label>
+<!-- Modal -->
+<div class="modal " id="exampleModal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Mantenimiento <span id="idposte" name="idposte">a</span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="post">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
+
     window.onload=function (){
+
         $('#map').on('click','.eliminar',function (e){
             // console.log($(this).attr('data-id'));
             let id=$(this).attr('data-id');
@@ -181,12 +218,14 @@
                             '<tr><td><b>Nro de post:</b></td><td>'+r.poste+'</td></tr>' +
                             '<tr><td><b>Tipo:</b></td><td>'+r.tipo+'</td></tr>' +
                             '<tr><td><b>Potencia:</b></td><td>'+r.potencia+' W</td></tr>' +
-                            '<tr><td colspan="2"><b><button class="btn btn-danger btn-sm">Mantenimiento</button></b></td></tr>' +
+                            '<tr><td colspan="2"><b><button class="btn btn-primary" data-id="'+r.id+'" data-toggle="modal" data-target="#exampleModal">Mantenimiento</button></b></td></tr>' +
                             '</table>'
                         L.marker([r.lat, r.lng], {icon: redMarker}).bindPopup(html+' <!--span class="eliminar" data-id="'+r.id+'"><i class="fa fa-trash-alt"></i></span-->').addTo(lugares);
                     })
                 }
             });
+
+           
         }
         var popup = L.popup();
         function onMapClick(e) {
@@ -250,6 +289,16 @@
 </script>
 
 
-
 </body>
+<script>
+
+ 
+                $(document).ready(function(){
+                    $("#exampleModal").on('shown.bs.modal', function (e) {
+                console.log('aaaa');
+                var id = $(this).data('id');
+                console.log(id);
+                });
+});
+</script>
 </html>
