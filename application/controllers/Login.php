@@ -1,0 +1,42 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Login extends CI_Controller {
+
+
+    public function login($usuario){
+        $resultado=$this->db->query("SELECT * FROM usuarios where nombre='$usuario'");
+//        echo $resultado->num_rows();
+        if($resultado->num_rows()==1){
+            $row=$resultado->row();
+            echo $row->id;
+        }else{
+            echo "0";
+        }
+    }
+
+    public function verifica()
+    {
+        $this->load->view('recorridos');
+
+
+        $usr=$this->input->post('user');
+        $con=$this->input->post('pass');
+
+        $resultado=$this->db->query("SELECT * FROM usuarios where cuenta='$usr' and clave='$con'");
+        if ($resultado->num_rows()>0)
+
+        {   $respuesta=$resultado->result();
+            $datosusr = array(
+                'nombre' =>$respuesta[0]->nombre,
+                'id' =>$respuesta[0]->id,
+                'login'=>1
+            );
+            $this->session->set_userdata($datosusr);
+            $this->load->view('recorridos');
+        }
+        else
+            //echo $respuesta;
+            redirect('');
+    }
+}
