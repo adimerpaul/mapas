@@ -126,50 +126,84 @@
 <div class="modal fade " id="revision" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            ...
+        <div class="card " >
+            <div class="card-header text-white bg-success">Registro de Mantenimiento</div>
+            <div class="card-body">
+                <div class="row" style="width:100%">
+            <div class=" row col-6">
+                <label for="fecha" class="col-3">Fecha :</label>
+                <div class="col-9">
+                <input type="date" class="form-control" name="fecha" id="fecha" value="<?php echo date('Y-m-d');?>">
+                </div>
+            </div>
+            <div class="col-6 row">
+                <label for="hora" class="col-3">Hora :</label>
+                <div class="col-9">
+                <input type="time" class="form-control" name="hora" id="hora" value="<?php echo date('H:i');?>">
+                </div>
+            </div>
+            </div> 
+
+            <div class="row">
+            <div class="form-group col-3" >
+                <label for="material">Materiales</label>
+                <select name="" id="material" class="form-control">
+                 <option value="">Seleccionar</option>
+                 <?php 
+                    $res=$this->db->query("Select * from materiales");
+                    foreach ($res->result_array() as $row) {
+                        echo '<option value='.$row['id'].'>'.$row['nombre'].'</option>';
+                    }
+                 ?>
+             </select>
+            </div>                    
+            <div class="form-group col-2">
+                <label for="cantidad">Cantidad</label>
+                <input type="number" class="form-control" id="cantidad" value=1 required min=0>
+            </div>
+            <div class="form-group col-3">
+                <label for="observacion">Observacion</label>
+                <input type="text"class="form-control"  id="observacion" >
+            </div>
+            <div class="form-group">
+                <label for="codigo">Codigo</label>
+                <input type="text"class="form-control"  id="codigo" >
+            </div><br>
+                <button class="btn btn-warning" id="btnagregar">Agregar</button>
+
+            </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Material</th>
+                    <th>Cantidad</th>
+                    <th>Observacion</th>
+                    <th>Codigo</th>
+                </tr>
+                </thead>
+                <tbody id='cuerpo'>
+                    <tr></tr>
+                </tbody>
+            </table>
+            <button class="btn btn-success" id="envmaterial">Registrar</button>
         </div>
     </div>
+
+            </div>
+        </div>
 </div>
 
 
-<!-- Modal -->
-<!--<div class="modal " id="exampleModal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-<!--  <div class="modal-dialog" role="document">-->
-<!--    <div class="modal-content">-->
-<!--      <div class="modal-header">-->
-<!--        <h5 class="modal-title" id="exampleModalLabel">Mantenimiento <span id="idposte" name="idposte">a</span></h5>-->
-<!--        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--          <span aria-hidden="true">&times;</span>-->
-<!--        </button>-->
-<!--      </div>-->
-<!--      <div class="modal-body">-->
-<!--        <form action="" method="post">-->
-<!--            <div class="mb-3">-->
-<!--                <label for="exampleInputEmail1" class="form-label">Email address</label>-->
-<!--                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">-->
-<!--                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>-->
-<!--            </div>-->
-<!--            <div class="mb-3">-->
-<!--                <label for="exampleInputPassword1" class="form-label">Password</label>-->
-<!--                <input type="password" class="form-control" id="exampleInputPassword1">-->
-<!--            </div>-->
-<!--            <div class="mb-3 form-check">-->
-<!--                <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
-<!--                <label class="form-check-label" for="exampleCheck1">Check me out</label>-->
-<!--            </div>-->
-<!--            <button type="submit" class="btn btn-primary">Submit</button>-->
-<!---->
-<!--        </form>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
 <script>
 
     window.onload=function (){
-        user_id=localStorage.getItem("user_id")
-        login()
-
+        var regmtto=[];
+        var idposte=0;
+        var regini={'material_id':'','cantidad':0,'observacion':'','codigo':''};
+        user_id=localStorage.getItem("user_id");
+        login();
+ 
+ 
 
         function login(){
             if (user_id){
@@ -199,8 +233,60 @@
             }
 
 
-        }
+        };
+        function cargar(){
+            cadena='';
+            console.log(regmtto);
+            regmtto.forEach(element => {
+                cadena+='<tr>';
+                cadena+='<td>'+element.nombre+'</td>';
+                cadena+='<td>'+element.cantidad+'</td>';
+                cadena+='<td>'+element.observacion+'</td>';
+                cadena+='<td>'+element.codigo+'</td>';
+                cadena+='</tr>';
+            });
+            $('#cuerpo').html(cadena);
+        };
+        $('#envmaterial').click(function(){
+            console.log(regmtto);
+            //return false;
+            if(regmtto.length>0){
+                $.ajax(
+                    {
+                        type: 'post',
+                        url: '<?=base_url()?>Mantenimiento/registro',
+                        data: { 
+                            "user_id": localStorage.getItem("user_id"),
+                            "mat": regmtto,
+                            'poste':idposte,
+                            'fecha':$('#fecha').val(),
+                            'hora':$('#hora').val()
+                        },
+                        success: function (response) {
+                            alert("Success !!");
+                            regmtto=[];
+                             $('#revision').modal('hide')
 
+                        },
+                        error: function () {
+                            alert("Error !!");
+                        }
+                    }
+                    );
+            }
+            regmtto=[];
+        });
+        $('#btnagregar').click(function(){
+            if($('#material').val()!='' && $('#cantidad').val()>0){
+            regmtto.push({'material':$('#material').val(),'nombre':$("#material option:selected" ).text(),'cantidad':$('#cantidad').val(),'observacion':$('#observacion').val(),'codigo':$('#codigo').val()});
+            $('#material').val('');
+            $('#cantidad').val(1);
+            $('#observacion').val('');
+            $('#codigo').val('');
+            }
+            cargar();
+
+        });
         //$('#map').on('click','.eliminar',function (e){
         //    // console.log($(this).attr('data-id'));
         //    let id=$(this).attr('data-id');
@@ -215,8 +301,9 @@
         //});
 
         $('#map').on('click','.revision',function (e){
-            // console.log($(this).attr('data-id'));
-            let id=$(this).attr('data-id');
+            console.log(e)
+             console.log($(this).attr('data-id'));
+            idposte=$(this).attr('data-id');
             //if (confirm("Seguro de mandar a mantenimiento?")){
             //    alert(id)
             //    $.ajax({
@@ -226,6 +313,7 @@
             //    });
             //
             //}
+            cargar();
             $('#revision').modal('show')
 
 

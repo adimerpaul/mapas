@@ -26,4 +26,20 @@ class Mantenimiento extends CI_Controller {
         echo $re->num_rows();
 
     }
+
+    public function registro(){
+        $user_id=$_POST['user_id'];
+        $lugar_id=$_POST['poste'];
+        $listmaterial=$_POST['mat'];
+        $fec=$_POST['fecha'];
+        $hor=$_POST['hora'];
+        $in=$this->db->insert('arreglos',['fecha'=>$fec,'hora'=>$hor,'lugar_id'=>$lugar_id,'user_id'=>$user_id]);
+        $id=$this->db->insert_id();
+
+        foreach ($listmaterial as $row) {
+            $this->db->insert('arreglo_material',['arreglo_id'=>$id,'material_id'=>$row['material'],'cantidad'=>$row['cantidad'],'observacion'=>$row['observacion'],'codigo'=>$row['codigo']]);
+        }
+        $this->db->query('UPDATE lugares set estado= "CORRECTO" where id='.$lugar_id);
+        echo true;
+    }
 }
