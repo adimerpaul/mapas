@@ -108,8 +108,8 @@
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" href="<?=base_url()?>">Postes</a>
-        <a class="dropdown-item" href="<?=base_url()?>Mantenimiento">Mantenimientos</a>
-        <a class="dropdown-item" href="#">Another action</a>
+        <a class="dropdown-item" href="<?=base_url()?>Man">Mantenimientos</a>
+        <a class="dropdown-item" href="<?=base_url()?>Mantenimiento">Reporte</a>
         <a class="dropdown-item" href="#">Something else here</a>
     </div>
 </div>
