@@ -109,8 +109,8 @@
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" href="<?=base_url()?>">Postes</a>
         <a class="dropdown-item" href="<?=base_url()?>Man">Mantenimientos</a>
-        <a class="dropdown-item" href="<?=base_url()?>Mantenimiento">Reporte</a>
-        <a class="dropdown-item" href="#">Something else here</a>
+        <a class="dropdown-item" href="<?=base_url()?>Reporte/usuario">Reporte</a>
+        <a class="dropdown-item" href="<?=base_url()?>Reporte/usuario">Materiales</a>
     </div>
 </div>
 
@@ -294,13 +294,18 @@
                             // svg:true,
                             // svgBorderColor:'#fff'
                         });
+                        if (r.estado=='MTTO'){
+                            color='badge-danger'
+                        }else{
+                            color='badge-success'
+                        }
                         var html='<table border="1">' +
                             '<tr><td><b>Codigo:</b></td><td>'+r.codigo+'</td></tr>' +
                             '<tr><td><b>Nro de post:</b></td><td>'+r.poste+'</td></tr>' +
                             '<tr><td><b>Tipo:</b></td><td>'+r.tipo+'</td></tr>' +
                             '<tr><td><b>Potencia:</b></td><td>'+r.potencia+' W</td></tr>' +
-                            '<tr><td><b>Estado:</b></td><td>'+r.estado+'</td></tr>' +
-                            '<tr><td colspan="2"><b><button class="btn btn-primary mantenimiento" data-id="'+r.id+'"><i class="fa fa-sm fa-cog"></i>Mantenimento</button></b></td></tr>' +
+                            '<tr><td><b>Estado:</b></td><td> <badge class="badge '+ color+'">'+r.estado+'</badge></td></tr>' +
+                            '<tr><td colspan="2"><b><button class="btn btn-info mantenimiento btn-sm" data-id="'+r.id+'"><i class="fa fa-sm fa-cog"></i>Mantenimento</button></b></td></tr>' +
                             '</table>'
                         L.marker([r.lat, r.lng], {icon: redMarker}).bindPopup(html+' <!--span class="eliminar" data-id="'+r.id+'"><i class="fa fa-trash-alt"></i></span-->').addTo(lugares);
                     })
@@ -310,33 +315,32 @@
 
         }
         var popup = L.popup();
-        function onMapClick(e) {
-            popup
-                .setLatLng(e.latlng)
-                .setContent("<input placeholder='codigo' id='codigo' /><br><input placeholder='potencia' id='potencia' /><br><input placeholder='tipo luminaria' id='tipo' /><br><input placeholder='poste' id='poste' /><button class='crear' id-lat='"+e.latlng.lat+"' id-lng='"+e.latlng.lng+"'>Crear </button>" + e.latlng.toString())
-                .openOn(map);
-        }
-        $('#map').on('click','.crear',function (e){
-            // console.log($('#nombre').val());
-            // console.log($(this).attr('id-lat'));
-            // return false;
-            $.ajax({
-                url:'<?=base_url()?>Welcome/crear',
-                type:'POST',
-                data:{codigo:$('#codigo').val(),potencia:$('#potencia').val(),tipo:$('#tipo').val(),poste:$('#poste').val(),
-                lat:$(this).attr('id-lat'),lng:$(this).attr('id-lng')},
-                success:function (e){
-                    // let dat=JSON.parse(e);
-                    // console.log(e);
-                    datos()
-                    // map.closePopup();
-                    popup.removeFrom(map)
-
-                }
-            });
-        });
-
-        map.on('click', onMapClick);
+        //function onMapClick(e) {
+        //    popup
+        //        .setLatLng(e.latlng)
+        //        .setContent("<input placeholder='codigo' id='codigo' /><br><input placeholder='potencia' id='potencia' /><br><input placeholder='tipo luminaria' id='tipo' /><br><input placeholder='poste' id='poste' /><button class='crear' id-lat='"+e.latlng.lat+"' id-lng='"+e.latlng.lng+"'>Crear </button>" + e.latlng.toString())
+        //        .openOn(map);
+        //}
+        //$('#map').on('click','.crear',function (e){
+        //    // console.log($('#nombre').val());
+        //    // console.log($(this).attr('id-lat'));
+        //    // return false;
+        //    $.ajax({
+        //        url:'<?//=base_url()?>//Welcome/crear',
+        //        type:'POST',
+        //        data:{codigo:$('#codigo').val(),potencia:$('#potencia').val(),tipo:$('#tipo').val(),poste:$('#poste').val(),
+        //        lat:$(this).attr('id-lat'),lng:$(this).attr('id-lng')},
+        //        success:function (e){
+        //            // let dat=JSON.parse(e);
+        //            // console.log(e);
+        //            datos()
+        //            // map.closePopup();
+        //            popup.removeFrom(map)
+        //
+        //        }
+        //    });
+        //});
+        //map.on('click', onMapClick);
     }
 
 
