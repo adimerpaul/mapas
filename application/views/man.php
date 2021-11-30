@@ -166,8 +166,8 @@
                 <input type="text"class="form-control"  id="observacion" >
             </div>
             <div class="form-group">
-                <label for="codigo">Codigo</label>
-                <input type="text"class="form-control"  id="codigo" >
+                <label for="codigo_mat">Codigo</label>
+                <input type="text"class="form-control"  id="codigo_mat" >
             </div><br>
                 <button class="btn btn-warning" id="btnagregar">Agregar</button>
 
@@ -199,7 +199,7 @@
     window.onload=function (){
         var regmtto=[];
         var idposte=0;
-        var regini={'material_id':'','cantidad':0,'observacion':'','codigo':''};
+        var regini={'material_id':'','cantidad':0,'observacion':'','codigo_mat':''};
         user_id=localStorage.getItem("user_id");
         login();
  
@@ -242,7 +242,7 @@
                 cadena+='<td>'+element.nombre+'</td>';
                 cadena+='<td>'+element.cantidad+'</td>';
                 cadena+='<td>'+element.observacion+'</td>';
-                cadena+='<td>'+element.codigo+'</td>';
+                cadena+='<td>'+element.codigo_mat+'</td>';
                 cadena+='</tr>';
             });
             $('#cuerpo').html(cadena);
@@ -278,11 +278,11 @@
         });
         $('#btnagregar').click(function(){
             if($('#material').val()!='' && $('#cantidad').val()>0){
-            regmtto.push({'material':$('#material').val(),'nombre':$("#material option:selected" ).text(),'cantidad':$('#cantidad').val(),'observacion':$('#observacion').val(),'codigo':$('#codigo').val()});
+            regmtto.push({'material':$('#material').val(),'nombre':$("#material option:selected" ).text(),'cantidad':$('#cantidad').val(),'observacion':$('#observacion').val(),'codigo_mat':$('#codigo_mat').val()});
             $('#material').val('');
             $('#cantidad').val(1);
             $('#observacion').val('');
-            $('#codigo').val('');
+            $('#codigo_mat').val('');
             }
             cargar();
 

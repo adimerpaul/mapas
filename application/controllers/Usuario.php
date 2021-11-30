@@ -36,4 +36,10 @@ class Usuario extends CI_Controller {
 			//echo $respuesta;
 		redirect('');
 	}
+
+	public function listuser(){
+		$query=$this->db->query('SELECT id,nombre from usuarios');
+        echo json_encode($query->result_array());
+
+	}
 }

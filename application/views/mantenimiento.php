@@ -54,14 +54,6 @@
             z-index: 400;
         }
 
-        #titulo {
-            top: 0px;
-            left: 0px;
-            padding: 10px;
-            margin-top: 5px;
-            margin-left: 260px;
-            
-        }
         #logooruro {
             top: 0px;
             left: 0px;
@@ -94,61 +86,48 @@
 <label for="" style="font-weight: bold;color: #002166" id="titulo"><b>RUMAP</b> <span style="font-size:14px;"> Registro Urbano de Mantenimiento de Alumbrado Publico</span></label>
 </div>
 <br>
-    <form action="" method="post">
 <div class="row">
-    <div class="col-auto">
-        <label >Codigo Poste</label>
-    </div>
-    <div class="col-4">
-        <select class="form-select" id="codigo"  required>
+    <div class="col-3">
+        <label >Usuarios:</label>
+        <select class="form-select" id="user"  required>
             <option selected>Seleccionar</option>
-            <?php $re= $this->db->query("SELECT * from  lugares  where estado='MTTO'");
+            <?php $re= $this->db->query("SELECT id,nombre from  usuarios ");
             
             foreach ($re->result_array() as $row) {
-                echo '<option value="'.$row['id'].'">'.$row['codigo'].'</option>';
-            }
-            ?>
-        </select>
-    </div>
-    <div class="col-auto">
-        <label >Material </label>
-    </div>
-    <div class="col-4">
-        <select class="form-select" id="codigo"  required>
-            <option selected>Seleccionar</option>
-            <?php $re= $this->db->query("SELECT * from  lugares  where estado='MTTO'");
-            
-            foreach ($re->result_array() as $row) {
-                echo '<option value="'.$row['id'].'">'.$row['codigo'].'</option>';
+                echo '<option value="'.$row['id'].'">'.$row['nombre'].'</option>';
             }
             ?>
         </select>
     </div>
     <div class="col-3">
-        <button class="btn btn-success">Buscar</button>
+        Fecha Ini: <input id="ini" type="date" value="<?php echo date('Y-m-d');?>">
+    </div>
+    <div class="col-3">
+        Fecha fin: <input id='fin' type="date" value="<?php echo date('Y-m-d');?>">
+    </div>
+    <div class="col-3">
+        <button id="generar" class="btn btn-success">Generar</button>
     </div>
     </div>
 <br>
-    </form>
 <div class="card ">
   <div class="card-header text-white bg-primary">Mantenimiento Poste</div>
   <div class="card-body">
-  <form>
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            <table>
+                <thead>
+                    <tr>
+                    <th>Fecha</th>
+                    <th>Poste</th>
+                    <th>Codigo</th>
+                    <th>Material</th>
+                    <th>Cantidad</th>
+                    <th>Observacion</th>
+                    <th>Codigo</th>
+                    </tr>
+                </thead>
+                <tbody id='tabody'></tbody>
+            </table>
   </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1">
-  </div>
-  <div class="mb-3 form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
 </div>
 </div>
 
@@ -158,6 +137,43 @@
     $(document).ready(function(){
 
     })
+    $('#generar').click(function(){
+        $.ajax(
+                    {
+                        type: 'post',
+                        url: '<?=base_url()?>Reporte/listado',
+                        data: { 
+                            "user_id": $('#user').val(),
+                            'ini':$('#ini').val(),
+                            'fin':$('#fin').val()
+                        },
+                        success: function (response) {
+                            console.log(response);
+                            var datos=JSON.parse(response);
+                            console.log(datos)
+                                let cadena='';
+                            datos.forEach(element => {
+                                cadena+='<tr>';
+                                cadena+='<td>'+element['fecha']+'</td>';
+                                cadena+='<td>'+element['poste']+'</td>';
+                                cadena+='<td>'+element['codigo']+'</td>';
+                                cadena+='<td>'+element['nombre']+'</td>';
+                                cadena+='<td>'+element['cantidad']+'</td>';
+                                cadena+='<td>'+element['observacion']+'</td>';
+                                cadena+='<td>'+element['codigo_mat']+'</td>';
+                                
+                                cadena+='</tr>';
+                                
+                            });
+                            $('#tabody').html(cadena);
 
+                        },
+                        error: function () {
+                            alert("Error !!");
+                        }
+                    }
+                    );
+            
+    });
 </script>
 </html>
