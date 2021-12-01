@@ -112,6 +112,7 @@
         <a class="dropdown-item" href="<?=base_url()?>Man">Mantenimientos</a>
         <a class="dropdown-item" href="<?=base_url()?>Reporte/usuario">Reporte</a>
         <a class="dropdown-item" href="<?=base_url()?>Reporte/usuario">Materiales</a>
+        <a class="dropdown-item" href="" id="logout">Salir</a>
     </div>
 </div>
 
@@ -202,7 +203,9 @@
         var regini={'material_id':'','cantidad':0,'observacion':'','codigo_mat':''};
         user_id=localStorage.getItem("user_id");
         login();
- 
+        $('#logout').click(function(){
+            localStorage.removeItem('user_id');
+        })
  
 
         function login(){
@@ -489,5 +492,8 @@
             console.log(id);
         });
     });
+            $('#logout').click(function(){
+            localStorage.removeItem('user_id');
+        })
 </script>
 </html>

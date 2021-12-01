@@ -37,7 +37,7 @@ class Mantenimiento extends CI_Controller {
         $id=$this->db->insert_id();
 
         foreach ($listmaterial as $row) {
-            $this->db->insert('arreglo_material',['arreglo_id'=>$id,'material_id'=>$row['material'],'cantidad'=>$row['cantidad'],'observacion'=>$row['observacion'],'codigo'=>$row['codigo']]);
+            $this->db->insert('arreglo_material',['arreglo_id'=>$id,'material_id'=>$row['material'],'cantidad'=>$row['cantidad'],'observacion'=>$row['observacion'],'codigo_mat'=>$row['codigo_mat']]);
         }
         $this->db->query('UPDATE lugares set estado= "CORRECTO" where id='.$lugar_id);
         echo true;

@@ -113,7 +113,7 @@
 <div class="card ">
   <div class="card-header text-white bg-primary">Mantenimiento Poste</div>
   <div class="card-body">
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                     <th>Fecha</th>
@@ -138,6 +138,8 @@
 
     })
     $('#generar').click(function(){
+        console.log($('#user selected').val());
+        if($('#user').val()!='' && $('#ini').val()!=null  && $('#fin').val()!=null){
         $.ajax(
                     {
                         type: 'post',
@@ -172,7 +174,7 @@
                             alert("Error !!");
                         }
                     }
-                    );
+                    );}
             
     });
 </script>

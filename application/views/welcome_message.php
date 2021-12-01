@@ -111,6 +111,7 @@
         <a class="dropdown-item" href="<?=base_url()?>Man">Mantenimientos</a>
         <a class="dropdown-item" href="<?=base_url()?>Reporte/usuario">Reporte</a>
         <a class="dropdown-item" href="<?=base_url()?>Reporte/usuario">Materiales</a>
+        <a class="dropdown-item" href="" id="logout">Salir</a>
     </div>
 </div>
 
@@ -156,13 +157,16 @@
     window.onload=function (){
         user_id=localStorage.getItem("user_id")
         login()
+        $('#logout').click(function(){
+            localStorage.removeItem('user_id');
+        })
 
 
         function login(){
             if (user_id){
 
             }else{
-                let usuario=prompt("Usuario?")
+                let usuario=prompt("Nombre de Usuario?")
                 console.log(usuario)
                 if (usuario!=null && usuario!=""){
                     $.ajax({
@@ -184,8 +188,6 @@
                     login()
                 }
             }
-
-
         }
 
         $('#map').on('click','.eliminar',function (e){
