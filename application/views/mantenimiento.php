@@ -118,11 +118,11 @@
                     <tr>
                     <th>Fecha</th>
                     <th>Poste</th>
-                    <th>Codigo</th>
+                    <th>Codigo-post</th>
                     <th>Material</th>
                     <th>Cantidad</th>
                     <th>Observacion</th>
-                    <th>Codigo</th>
+                    <th>Codigo-mat</th>
                     </tr>
                 </thead>
                 <tbody id='tabody'></tbody>
