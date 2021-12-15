@@ -152,6 +152,38 @@
 <!--    </div>-->
 <!--  </div>-->
 <!--</div>-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">POSTE N <span id="nposte" name="nposte"></span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <table class="table">
+                <thead>
+                    <tr>
+                    <th>Fecha</th>
+                    <th>Poste</th>
+                    <th>Codigo-post</th>
+                    <th>Material</th>
+                    <th>Cantidad</th>
+                    <th>Observacion</th>
+                    <th>Codigo-mat</th>
+                    </tr>
+                </thead>
+                <tbody id='tabody'></tbody>
+            </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
 
     window.onload=function (){
@@ -224,6 +256,46 @@
             //        datos();
             //    }
             //});
+        });
+
+        $('#map').on('click','.log',function (e){
+            // console.log($(this).attr('data-id'));
+            let id=$(this).attr('data-id');
+            $('#nposte').html(id);
+            $.ajax(
+                    {
+                        type: 'post',
+                        url: '<?=base_url()?>Reporte/reportelog',
+                        data: { 
+                            "id": id,
+                        },
+                        success: function (response) {
+                            console.log(response);
+                            var datos=JSON.parse(response);
+                            console.log(datos)
+                                let cadena='';
+                            datos.forEach(element => {
+                                cadena+='<tr>';
+                                cadena+='<td>'+element['fecha']+'</td>';
+                                cadena+='<td>'+element['poste']+'</td>';
+                                cadena+='<td>'+element['codigo']+'</td>';
+                                cadena+='<td>'+element['nombre']+'</td>';
+                                cadena+='<td>'+element['cantidad']+'</td>';
+                                cadena+='<td>'+element['observacion']+'</td>';
+                                cadena+='<td>'+element['codigo_mat']+'</td>';
+                                
+                                cadena+='</tr>';
+                                
+                            });
+                            $('#tabody').html(cadena);
+
+                        },
+                        error: function () {
+                            alert("Error !!");
+                        }
+                    }
+                    );
+
         });
 
         var lugares = L.layerGroup();
@@ -307,15 +379,18 @@
                             '<tr><td><b>Tipo:</b></td><td>'+r.tipo+'</td></tr>' +
                             '<tr><td><b>Potencia:</b></td><td>'+r.potencia+' W</td></tr>' +
                             '<tr><td><b>Estado:</b></td><td> <badge class="badge '+ color+'">'+r.estado+'</badge></td></tr>' +
-                            '<tr><td colspan="2"><b><button class="btn btn-info mantenimiento btn-sm" data-id="'+r.id+'"><i class="fa fa-sm fa-cog"></i>Mantenimento</button></b></td></tr>' +
-                            '</table>'
+                            '<tr><td><b><button class="btn btn-info mantenimiento btn-sm" data-id="'+r.id+'"><i class="fa fa-sm fa-cog"></i>Mantenimento</button></b></td>'+
+                            '<td><b><button class="btn btn-warning log btn-sm" data-id="'+r.id+'" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-sm fa-list"></i>Log</button></b></td>'+
+                            '</tr></table>'
                         L.marker([r.lat, r.lng], {icon: redMarker}).bindPopup(html+' <!--span class="eliminar" data-id="'+r.id+'"><i class="fa fa-trash-alt"></i></span-->').addTo(lugares);
                     })
+
                 }
             });
 
 
         }
+
         var popup = L.popup();
         //function onMapClick(e) {
         //    popup
@@ -382,11 +457,7 @@
 
 
                 $(document).ready(function(){
-                    $("#exampleModal").on('shown.bs.modal', function (e) {
-                console.log('aaaa');
-                var id = $(this).data('id');
-                console.log(id);
-                });
+
 });
 </script>
 </html>

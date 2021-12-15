@@ -29,4 +29,17 @@ class Reporte extends CI_Controller
         where am.arreglo_id='.$idarreglo);
         echo json_encode($query);
     }
+
+    public function reportelog(){
+        $poste=$_POST['id'];
+
+        $query=$this->db->query("SELECT * FROM arreglos a 
+           inner join lugares l on a.lugar_id=l.id
+           inner join arreglo_material am on a.id=am.arreglo_id
+           inner join materiales m on am.material_id=m.id 
+           WHERE l.id=$poste");
+
+        echo json_encode($query->result_array());
+    }
+
 }
