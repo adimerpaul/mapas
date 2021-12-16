@@ -156,7 +156,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Mantenimiento POSTE </span></h5>
+        <h5 class="modal-title" id="exampleModalLabel">Mantenimiento POSTE <span id="nposte"></span></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -166,12 +166,11 @@
                 <thead>
                     <tr>
                     <th>Fecha</th>
-                    <th>Poste</th>
-                    <th>Codigo-post</th>
                     <th>Material</th>
                     <th>Cantidad</th>
                     <th>Observacion</th>
                     <th>Codigo-mat</th>
+                    <th>Usuario</th>
                     </tr>
                 </thead>
                 <tbody id='tabody'></tbody>
@@ -261,7 +260,9 @@
         $('#map').on('click','.log',function (e){
             // console.log($(this).attr('data-id'));
             let id=$(this).attr('data-id');
-            $('#nposte').html(id);
+            let cod=$(this).attr('data-codigo');
+
+            $('#nposte').html(cod);
             $.ajax(
                     {
                         type: 'post',
@@ -277,12 +278,11 @@
                             datos.forEach(element => {
                                 cadena+='<tr>';
                                 cadena+='<td>'+element['fecha']+'</td>';
-                                cadena+='<td>'+element['poste']+'</td>';
-                                cadena+='<td>'+element['codigo']+'</td>';
-                                cadena+='<td>'+element['nombre']+'</td>';
+                                cadena+='<td>'+element['nom_material']+'</td>';
                                 cadena+='<td>'+element['cantidad']+'</td>';
                                 cadena+='<td>'+element['observacion']+'</td>';
                                 cadena+='<td>'+element['codigo_mat']+'</td>';
+                                cadena+='<td>'+element['nom_user']+'</td>';
                                 
                                 cadena+='</tr>';
                                 
@@ -380,7 +380,7 @@
                             '<tr><td><b>Potencia:</b></td><td>'+r.potencia+' W</td></tr>' +
                             '<tr><td><b>Estado:</b></td><td> <badge class="badge '+ color+'">'+r.estado+'</badge></td></tr>' +
                             '<tr><td><b><button class="btn btn-info mantenimiento btn-sm" data-id="'+r.id+'"><i class="fa fa-sm fa-cog"></i>Mantenimento</button></b></td>'+
-                            '<td><b><button class="btn btn-warning log btn-sm" data-id="'+r.id+'" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-sm fa-list"></i>Log</button></b></td>'+
+                            '<td><b><button class="btn btn-warning log btn-sm" data-id="'+r.id+'" data-codigo="'+r.codigo+'" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-sm fa-list"></i>Log</button></b></td>'+
                             '</tr></table>'
                         L.marker([r.lat, r.lng], {icon: redMarker}).bindPopup(html+' <!--span class="eliminar" data-id="'+r.id+'"><i class="fa fa-trash-alt"></i></span-->').addTo(lugares);
                     })
