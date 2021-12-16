@@ -64,8 +64,8 @@
             top: 0px;
             left: 0px;
             /*padding: 10px;*/
-            margin-top: 50px;
-            margin-left: 80px;
+            margin-top: 10px;
+            margin-left: 140px;
             z-index: 400;
         }
 
@@ -84,7 +84,7 @@
             left: 0px;
             padding: 10px;
             margin-top: 5px;
-            margin-left: 260px;
+            margin-left: 380px;
             z-index: 400;
         }
         #logooruro {
@@ -93,7 +93,7 @@
             left: 0px;
             padding: 10px;
             margin-top: 0px;
-            margin-left: 230px;
+            margin-left: 350px;
             z-index: 400;
         }
         #logouto {
@@ -104,6 +104,14 @@
             margin-top: 0px;
             margin-right: 50px;
             z-index: 400;
+        }
+        @media only screen and (max-width: 600px) {
+            /*body {*/
+            /*    background-color: lightblue;*/
+            /*}*/
+            #logooruro, #titulo {
+                display: none;
+            }
         }
 	</style>
 
@@ -125,9 +133,13 @@
         <a class="dropdown-item" href="" id="logout">Salir</a>
     </div>
 </div>
-<div class="row busqueda">
-    <div class="col-6"><input type="text" id="codigoposte"></div>
-    <div class="col-2"><button class="btn btn-success" id="btnbuscar">Buscar </button></div>
+<div class="busqueda">
+    <form action="" id="btnbuscar">
+        <div class="row">
+            <div class="col-6"><input type="text" id="codigoposte" style="width: 100px" placeholder="Numero poste"></div>
+            <div class="col-2"><button class="btn btn-success" id="btn">Buscar </button></div>
+        </div>
+    </form>
 </div>
 
 <!--input type="button" onclick='location.href="<?=base_url()?>"' id="btnlugares" class="btn btn-success btn-sm" value="Postes" />
@@ -177,7 +189,8 @@
         </button>
       </div>
       <div class="modal-body">
-      <table class="table">
+          <div class="table-responsive">
+            <table class="table">
                 <thead>
                     <tr>
                     <th>Fecha</th>
@@ -190,6 +203,7 @@
                 </thead>
                 <tbody id='tabody'></tbody>
             </table>
+          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -343,7 +357,8 @@
         var overlays = {
             "Lugares": lugares
         };
-        $('#btnbuscar').on('click',function(){
+        $('#btnbuscar').on('submit',function(){
+            $('#btn').html('<i class="fa fa-spinner"><i/> Buscar')
             let parametro=$('#codigoposte').val();
             if(parametro!='')
             {
@@ -355,21 +370,25 @@
                             "poste": parametro,
                         },
                         success: function (response) {
+                            $('#btn').html('Buscar')
+
                             let dat=JSON.parse(response);
                             let lat=''
                             let lng=''
-                            if(dat.length>0){                               
+                                if(dat.length>0){
 
-                                lat=dat[0].lat
-                                lng=dat[0].lng
-                                map.setZoom(18);
-                                setTimeout(function(){map.panTo(new L.LatLng(lat,lng));},500);
+                                    lat=dat[0].lat
+                                    lng=dat[0].lng
+                                    map.setZoom(18);
+                                    setTimeout(function(){map.panTo(new L.LatLng(lat,lng));},500);
+                                }
+                                else{
+                                    map.panTo(new L.LatLng(-17.960118, -67.110329));
+                                    map.setZoom(14);
+                                }
+
                             }
-                            else{
-                                map.panTo(new L.LatLng(-17.960118, -67.110329));
-                                map.setZoom(14);
-            }
-                            }
+
                             
                         })
             }
@@ -377,6 +396,7 @@
                 map.setZoom(14);
                 map.panTo(new L.LatLng(-17.960118, -67.110329));
             }
+            return false;
 
         });
         // var LeafIcon = L.Icon.extend({
