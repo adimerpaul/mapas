@@ -52,4 +52,14 @@ class Reporte extends CI_Controller
         echo json_encode($query->result_array());
     }
 
+    public function posicion(){
+        $poste=$_POST['poste'];
+
+        $query=$this->db->query("SELECT *    
+         FROM  lugares 
+         WHERE poste='$poste'");
+
+        echo json_encode($query->result_array());
+    }
+
 }

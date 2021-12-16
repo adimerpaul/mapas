@@ -58,6 +58,17 @@
             margin-left: 50px;
             z-index: 400;
         }
+
+        .busqueda {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            /*padding: 10px;*/
+            margin-top: 50px;
+            margin-left: 80px;
+            z-index: 400;
+        }
+
         #recorridos {
             position: absolute;
             top: 0px;
@@ -113,6 +124,10 @@
         <a class="dropdown-item" href="<?=base_url()?>Reporte/usuario">Materiales</a>
         <a class="dropdown-item" href="" id="logout">Salir</a>
     </div>
+</div>
+<div class="row busqueda">
+    <div class="col-6"><input type="text" id="codigoposte"></div>
+    <div class="col-2"><button class="btn btn-success" id="btnbuscar">Buscar </button></div>
 </div>
 
 <!--input type="button" onclick='location.href="<?=base_url()?>"' id="btnlugares" class="btn btn-success btn-sm" value="Postes" />
@@ -233,7 +248,7 @@
                 }
             });
         });
-
+        
         $('#map').on('click','.mantenimiento',function (e){
             // console.log($(this).attr('data-id'));
             let id=$(this).attr('data-id');
@@ -328,6 +343,42 @@
         var overlays = {
             "Lugares": lugares
         };
+        $('#btnbuscar').on('click',function(){
+            let parametro=$('#codigoposte').val();
+            if(parametro!='')
+            {
+                $.ajax(
+                    {
+                        type: 'post',
+                        url: '<?=base_url()?>Reporte/posicion',
+                        data: { 
+                            "poste": parametro,
+                        },
+                        success: function (response) {
+                            let dat=JSON.parse(response);
+                            let lat=''
+                            let lng=''
+                            if(dat.length>0){                               
+
+                                lat=dat[0].lat
+                                lng=dat[0].lng
+                                map.setZoom(18);
+                                setTimeout(function(){map.panTo(new L.LatLng(lat,lng));},500);
+                            }
+                            else{
+                                map.panTo(new L.LatLng(-17.960118, -67.110329));
+                                map.setZoom(14);
+            }
+                            }
+                            
+                        })
+            }
+            else{
+                map.setZoom(14);
+                map.panTo(new L.LatLng(-17.960118, -67.110329));
+            }
+
+        });
         // var LeafIcon = L.Icon.extend({
         //     options: {
         //         iconSize:     [38, 95],
